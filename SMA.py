@@ -105,7 +105,8 @@ def SMA(pop,dim,lb,ub,MaxIter,fun):
         #位置更新
         for i in range(pop):
             if np.random.random()<z:
-                X[i,:] = (ub.T-lb.T)*np.random.random([1,dim])+lb.T #公式（1.4）第一个式子
+                #公式（1.4）第一个式子
+                X[i,:] = (ub.T-lb.T)*np.random.random([1,dim])+lb.T 
             else:
                 p = np.tanh(abs(fitness[i]-GbestScore))
                 vb = 2*a*np.random.random([1,dim])-a
@@ -115,17 +116,25 @@ def SMA(pop,dim,lb,ub,MaxIter,fun):
                     A = np.random.randint(pop)
                     B = np.random.randint(pop)
                     if r<p:
-                        X[i,j] = GbestPositon[j] + vb[0,j]*(W[i,j]*X[A,j]-X[B,j]) #公式（1.4）第二个式子
-                    else:
-                        X[i,j] = vc[0,j]*X[i,j]         #公式(1.4)第三个式子
+                        #公式（1.4）第二个式子
+                        X[i,j] = GbestPositon[j] + vb[0,j]*(W[i,j]*X[A,j]-X[B,j]) 
+                        #公式(1.4)第三个式子
+                        X[i,j] = vc[0,j]*X[i,j]         
         
-        X = BorderCheck(X,ub,lb,pop,dim) #边界检测       
-        fitness = CaculateFitness(X,fun) #计算适应度值
-        fitness,sortIndex = SortFitness(fitness) #对适应度值排序
-        X = SortPosition(X,sortIndex) #种群排序
-        if(fitness[0]<=GbestScore): #更新全局最优
+        #边界检测 
+        X = BorderCheck(X,ub,lb,pop,dim)
+        #计算适应度值       
+        fitness = CaculateFitness(X,fun) 
+        #对适应度值排序
+        fitness,sortIndex = SortFitness(fitness) 
+        #种群排序
+        X = SortPosition(X,sortIndex) 
+
+        #更新全局最优
+        if(fitness[0]<=GbestScore): 
             GbestScore = copy.copy(fitness[0])
             GbestPositon = copy.copy(X[0,:])
+            print(GbestScore)
         Curve[t] = GbestScore
     
     return GbestScore,GbestPositon,Curve

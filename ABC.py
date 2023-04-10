@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-seed=50
+np.random.seed(10)
+
 import random
 random.seed(0)
+
 import copy as copy
 
 def initialization(pop, ub, lb, dim):
@@ -164,6 +166,7 @@ def ABC(pop, dim, lb, ub, MaxIter, fun):
         if fitness[0] <= GbestScore: 
             GbestScore = copy.copy(fitness[0])
             GbestPositon[0,:] = copy.copy(X[0, :])
+            print(GbestScore)
         Curve[t] = GbestScore
 
     return GbestScore, GbestPositon, Curve
