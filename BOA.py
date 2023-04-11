@@ -102,3 +102,4 @@ def BOA(pop, dim, lb, ub, MaxIter, fun):
         Curve[t] = GbestScore
 
     return GbestScore, GbestPositon, Curve
+    # return GbestScore[0], GbestPositon[0][0], Curve

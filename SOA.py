@@ -90,3 +90,4 @@ def SOA(pop, dim, lb, ub, MaxIter, fun):
         Curve[i] = GbestScore
 
     return GbestScore, GbestPositon, Curve
+    # return GbestScore[0], GbestPositon[0][0], Curve

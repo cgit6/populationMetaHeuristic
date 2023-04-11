@@ -88,9 +88,11 @@ def GOA(pop, dim, lb, ub, MaxIter, fun):
         fitness = CaculateFitness(X,fun) #计算适应度值
         fitness,sortIndex = SortFitness(fitness) #对适应度值排序
         X = SortPosition(X,sortIndex) #种群排序
-        if(fitness[0]<=GbestScore): #更新全局最优
+
+        if(fitness[0]<=GbestScore): 
             GbestScore = copy.copy(fitness[0])
             GbestPositon = copy.copy(X[0,:])
         Curve[t] = GbestScore
     
     return GbestScore,GbestPositon,Curve
+    # return GbestScore[0], GbestPositon[0], Curve

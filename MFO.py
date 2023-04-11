@@ -77,3 +77,4 @@ def MFO(pop, dim, lb, ub, MaxIter, fun):
         Curve[iter] = GbestScore
      
     return GbestScore, GbestPositon, Curve
+    return GbestScore[0], GbestPositon[0][0], Curve

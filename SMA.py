@@ -69,7 +69,11 @@ def SMA(pop,dim,lb,ub,MaxIter,fun):
         for i in range(pop):
             if np.random.random()<z:
                 #公式（1.4）第一个式子
+                # 方法一
                 X[i, :] = (ub.T-lb.T)*np.random.random([1, dim])+lb.T
+                # 方法二
+                # for k in range(dim):
+                #     X[i, :] = (ub[k]-lb[k])*np.random.random([1, dim])+lb[k]
             else:
                 p = np.tanh(abs(fitness[i]-GbestScore))
                 vb = 2*a*np.random.random([1,dim])-a
@@ -100,6 +104,9 @@ def SMA(pop,dim,lb,ub,MaxIter,fun):
         Curve[t] = GbestScore
     
     return GbestScore,GbestPositon,Curve
+    # return GbestScore[0], GbestPositon[0][0], Curve
+
+
     
 
 
