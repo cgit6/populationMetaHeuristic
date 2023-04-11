@@ -2,14 +2,6 @@ import numpy as np
 import copy
 import random
 def initialization(pop,ub,lb,dim):
-    ''' 种群初始化函数'''
-    '''
-    pop:为种群数量
-    dim:每个个体的维度
-    ub:每个维度的变量上边界，维度为[dim,1]
-    lb:为每个维度的变量下边界，维度为[dim,1]
-    X:为输出的种群，维度[pop,dim]
-    '''
     X = np.zeros([pop,dim]) #声明空间
     for i in range(pop):
         for j in range(dim):
@@ -18,14 +10,6 @@ def initialization(pop,ub,lb,dim):
     return X
      
 def BorderCheck(X,ub,lb,pop,dim):
-    '''边界检查函数'''
-    '''
-    dim:为每个个体数据的维度大小
-    X:为输入数据，维度为[pop,dim]
-    ub:为个体数据上边界，维度为[dim,1]
-    lb:为个体数据下边界，维度为[dim,1]
-    pop:为种群数量
-    '''
     for i in range(pop):
         for j in range(dim):
             if X[i,j]>ub[j]:
@@ -36,7 +20,6 @@ def BorderCheck(X,ub,lb,pop,dim):
 
 
 def CaculateFitness(X,fun):
-    '''计算种群的所有个体的适应度值'''
     pop = X.shape[0]
     fitness = np.zeros([pop, 1])
     for i in range(pop):
@@ -45,17 +28,11 @@ def CaculateFitness(X,fun):
 
 
 def SortFitness(Fit):
-    '''适应度值排序'''
-    '''
-    输入为适应度值
-    输出为排序后的适应度值，和索引
-    '''
     fitness = np.sort(Fit, axis=0)
     index = np.argsort(Fit, axis=0)
     return fitness,index
 
 def SortPosition(X,index):
-    '''根据适应度值对位置进行排序'''
     Xnew = np.zeros(X.shape)
     for i in range(X.shape[0]):
         Xnew[i,:] = X[index[i],:]
@@ -63,21 +40,6 @@ def SortPosition(X,index):
 
 
 def SSA(pop,dim,lb,ub,Max_iter,fun):
-    '''麻雀搜索算法'''
-    '''
-    输入：
-    pop:为种群数量
-    dim:每个个体的维度
-    ub:为个体上边界信息，维度为[1,dim]
-    lb:为个体下边界信息，维度为[1,dim]
-    fun:为适应度函数接口
-    MaxIter:为最大迭代次数
-    输出：
-    GbestScore:最优解对应的适应度值
-    GbestPositon:最优解
-    Curve:迭代曲线
-    '''
-    
     ST = 0.8 #预警值
     PD = 0.2 #发现者的比列，剩下的是加入者
     SD = 0.1 #意识到有危险麻雀的比重
@@ -92,11 +54,9 @@ def SSA(pop,dim,lb,ub,Max_iter,fun):
     GbestPositon[0,:] = copy.copy(X[0,:])
     Curve = np.zeros([Max_iter,1])
     for t in range(Max_iter):
-        print("第"+str(t)+"次迭代")
         BestF = copy.copy(fitness[0])
         Xworst = copy.copy(X[-1,:])
         Xbest = copy.copy(X[0,:])
-        '''发现者位置更新'''
         R2 = np.random.random()
         for i in range(PDNumber):
             if R2<ST:
@@ -109,7 +69,6 @@ def SSA(pop,dim,lb,ub,Max_iter,fun):
         
         bestII=np.argmin(fitness)
         Xbest = copy.copy(X[bestII,:])
-        '''加入者位置更新'''
         for i in range(PDNumber+1,pop):
              if i>(pop - PDNumber)/2 + PDNumber:
                  X[i,:]= np.random.randn()*np.exp((Xworst - X[i,:])/i**2)
@@ -124,7 +83,6 @@ def SSA(pop,dim,lb,ub,Max_iter,fun):
         
         X = BorderCheck(X,ub,lb,pop,dim) #边界检测   
         fitness = CaculateFitness(X,fun) #计算适应度值
-        '''意识到危险的麻雀更新'''
         Temp = range(pop)
         RandIndex = random.sample(Temp, pop) 
         SDchooseIndex = RandIndex[0:SDNumber]#随机选取对应比列的麻雀作为意识到危险的麻雀

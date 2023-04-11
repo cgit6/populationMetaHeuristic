@@ -9,14 +9,6 @@ random.seed(0)
 import copy as copy
 
 def initialization(pop, ub, lb, dim):
-    ''' 种群初始化函数'''
-    '''
-    pop:为种群数量
-    dim:每个个体的维度
-    ub:每个维度的变量上边界，维度为[dim,1]
-    lb:为每个维度的变量下边界，维度为[dim,1]
-    X:为输出的种群，维度[pop,dim]
-    '''
     X = np.zeros([pop, dim])  # 声明空间
     for i in range(pop):
         for j in range(dim):
@@ -95,7 +87,6 @@ def ABC(pop, dim, lb, ub, MaxIter, fun):
     fitnessNew = copy.copy(fitness)
     # 迭代階段
     for t in range(MaxIter):
-        '''引领蜂搜索'''
         for i in range(pop):
             #隨機選擇一個個體
             k = np.random.randint(pop)
@@ -126,7 +117,6 @@ def ABC(pop, dim, lb, ub, MaxIter, fun):
         #式（2.4）
         P=F/sum(F)
 
-        '''侦察蜂搜索'''
         for m in range(nOnlooker):
             #輪盤賭測量選擇個體
             i=RouletteWheelSelection(P)
@@ -150,7 +140,6 @@ def ABC(pop, dim, lb, ub, MaxIter, fun):
                 # 如果位置沒有更新，累加器+1
                 C[i] = C[i]+1 
                 
-        '''判断limit条件，并进行更新'''
         for i in range(pop):
             if C[i]>=L:
                 for j in range(dim):
@@ -166,7 +155,6 @@ def ABC(pop, dim, lb, ub, MaxIter, fun):
         if fitness[0] <= GbestScore: 
             GbestScore = copy.copy(fitness[0])
             GbestPositon[0,:] = copy.copy(X[0, :])
-            print(GbestScore)
         Curve[t] = GbestScore
 
     return GbestScore, GbestPositon, Curve

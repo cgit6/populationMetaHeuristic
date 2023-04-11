@@ -2,14 +2,6 @@ import numpy as np
 import copy as copy
 
 def initialization(pop,ub,lb,dim):
-    ''' 黏菌种群初始化函数'''
-    '''
-    pop:为种群数量
-    dim:每个个体的维度
-    ub:每个维度的变量上边界，维度为[dim,1]
-    lb:为每个维度的变量下边界，维度为[dim,1]
-    X:为输出的种群，维度[pop,dim]
-    '''
     X = np.zeros([pop,dim]) #声明空间
     for i in range(pop):
         for j in range(dim):
@@ -18,14 +10,6 @@ def initialization(pop,ub,lb,dim):
     return X
      
 def BorderCheck(X,ub,lb,pop,dim):
-    '''边界检查函数'''
-    '''
-    dim:为每个个体数据的维度大小
-    X:为输入数据，维度为[pop,dim]
-    ub:为个体数据上边界，维度为[dim,1]
-    lb:为个体数据下边界，维度为[dim,1]
-    pop:为种群数量
-    '''
     for i in range(pop):
         for j in range(dim):
             if X[i,j]>ub[j]:
@@ -36,7 +20,6 @@ def BorderCheck(X,ub,lb,pop,dim):
 
 
 def CaculateFitness(X,fun):
-    '''计算种群的所有个体的适应度值'''
     pop = X.shape[0]
     fitness = np.zeros([pop, 1])
     for i in range(pop):
@@ -45,17 +28,11 @@ def CaculateFitness(X,fun):
 
 
 def SortFitness(Fit):
-    '''适应度排序'''
-    '''
-    输入为适应度值
-    输出为排序后的适应度值，和索引
-    '''
     fitness = np.sort(Fit, axis=0)
     index = np.argsort(Fit, axis=0)
     return fitness,index
 
 def SortPosition(X,index):
-    '''根据适应度对位置进行排序'''
     Xnew = np.zeros(X.shape)
     for i in range(X.shape[0]):
         Xnew[i,:] = X[index[i],:]
@@ -63,20 +40,6 @@ def SortPosition(X,index):
 
 
 def SMA(pop,dim,lb,ub,MaxIter,fun):
-    '''黏菌优化算法'''
-    '''
-    输入：
-    pop:为种群数量
-    dim:每个个体的维度
-    ub:为个体上边界信息，维度为[1,dim]
-    lb:为个体下边界信息，维度为[1,dim]
-    fun:为适应度函数接口
-    MaxIter:为最大迭代次数
-    输出：
-    GbestScore:最优解对应的适应度值
-    GbestPositon:最优解
-    Curve:迭代曲线
-    '''
     z = 0.03 #位置更新参数
     X = initialization(pop,ub,lb,dim) #初始化种群
     fitness = CaculateFitness(X,fun) #计算适应度值
@@ -106,7 +69,7 @@ def SMA(pop,dim,lb,ub,MaxIter,fun):
         for i in range(pop):
             if np.random.random()<z:
                 #公式（1.4）第一个式子
-                X[i,:] = (ub.T-lb.T)*np.random.random([1,dim])+lb.T 
+                X[i, :] = (ub.T-lb.T)*np.random.random([1, dim])+lb.T
             else:
                 p = np.tanh(abs(fitness[i]-GbestScore))
                 vb = 2*a*np.random.random([1,dim])-a
@@ -134,7 +97,6 @@ def SMA(pop,dim,lb,ub,MaxIter,fun):
         if(fitness[0]<=GbestScore): 
             GbestScore = copy.copy(fitness[0])
             GbestPositon = copy.copy(X[0,:])
-            print(GbestScore)
         Curve[t] = GbestScore
     
     return GbestScore,GbestPositon,Curve
